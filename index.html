@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Erlya">
+<meta name="theme-color" content="#04020a">
+<title>Erlya</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#04020a; --bg2:#07030f; --bg3:#0d0618; --bg4:#110820;
+  --text:#e2d6c0; --text-soft:rgba(226,214,192,0.55); --text-muted:rgba(226,214,192,0.3);
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
+  --lily:#9b6fa8; --lily-light:#c4a0d8; --gold:#c8963c; --rose:#a83850; --violet:#4a2478;
+  --surface:rgba(255,255,255,0.035); --surface2:rgba(255,255,255,0.065);
+  --tab-h:60px; --top-h:54px; --r:14px;
+}
+[data-theme="light"] {
+  --bg:#f2e8d5; --bg2:#e8dcca; --bg3:#ddd0bc; --bg4:#d2c4b0;
+  --text:#18082e; --text-soft:rgba(24,8,46,0.6); --text-muted:rgba(24,8,46,0.38);
+  --border:rgba(0,0,0,0.09); --border2:rgba(0,0,0,0.16);
+  --surface:rgba(0,0,0,0.035); --surface2:rgba(0,0,0,0.07);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;font-size:16px;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;}
+
+/* SCREENS */
+.screen{position:absolute;inset:0;display:none;flex-direction:column;background:var(–bg);overflow:hidden;}
+.screen.active{display:flex;}
+
+/* ── AUTH ── */
+.auth-bg{position:absolute;inset:0;}
+.auth-gradient{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(155,111,168,0.16) 0%,transparent 65%);}
+.auth-lily{position:absolute;opacity:0.1;}
+.auth-panel{
+position:relative;z-index:2;
+background:var(–bg2);border-radius:24px 24px 0 0;
+border-top:1px solid var(–border2);
+padding:1.8rem 1.4rem 2.5rem;
+}
+.social-btn{
+width:100%;padding:0.78rem 1rem;border-radius:11px;
+border:1px solid var(–border2);background:var(–surface2);
+display:flex;align-items:center;gap:0.7rem;
+font-size:0.88rem;font-weight:500;color:var(–text);
+cursor:pointer;margin-bottom:0.55rem;font-family:‘DM Sans’,sans-serif;
+transition:background 0.15s;
+}
+.social-btn:active{background:var(–surface);}
+.s-icon{width:20px;height:20px;flex-shrink:0;}
+.divrow{display:flex;align-items:center;gap:0.65rem;margin:0.4rem 0;}
+.divline{flex:1;height:1px;background:var(–border);}
+.divtxt{font-size:0.75rem;color:var(–text-muted);}
+.flabel{font-size:0.72rem;font-weight:600;color:var(–text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.28rem;display:block;}
+.finput{
+width:100%;background:var(–surface2);border:1px solid var(–border);
+border-radius:9px;padding:0.72rem 0.88rem;color:var(–text);
+font-family:‘DM Sans’,sans-serif;font-size:0.9rem;outline:none;
+transition:border-color 0.2s;margin-bottom:0.65rem;-webkit-appearance:none;
+}
+.finput:focus{border-color:var(–lily);}
+.finput::placeholder{color:var(–text-muted);}
+.aswitch{text-align:center;margin-top:0.9rem;font-size:0.82rem;color:var(–text-muted);}
+.aswitch a{color:var(–lily-light);font-weight:600;cursor:pointer;}
+.aterms{font-size:0.7rem;color:var(–text-muted);text-align:center;margin-top:0.65rem;line-height:1.5;}
+
+/* ── TOPBAR ── */
+.topbar{
+height:var(–top-h);background:var(–bg);border-bottom:1px solid var(–border);
+display:flex;align-items:center;padding:0 1rem;gap:0.6rem;flex-shrink:0;z-index:10;
+}
+.logo-row{display:flex;align-items:center;gap:0.45rem;cursor:pointer;flex-shrink:0;}
+.logo-txt{font-family:‘Playfair Display’,serif;font-size:1.2rem;font-weight:900;font-style:italic;background:linear-gradient(135deg,#c4a0d8 0%,#9b6fa8 55%,#c8963c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sw{flex:1;position:relative;}
+.sinput{width:100%;background:var(–surface2);border:1px solid var(–border);border-radius:8px;padding:0.4rem 0.75rem 0.4rem 1.9rem;color:var(–text);font-size:0.82rem;outline:none;font-family:‘DM Sans’,sans-serif;-webkit-appearance:none;}
+.sinput::placeholder{color:var(–text-muted);}
+.sic{position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);color:var(–text-muted);font-size:0.75rem;}
+.icon-btn{width:32px;height:32px;border-radius:50%;background:transparent;border:none;color:var(–text-muted);font-size:0.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.uava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(–lily),var(–violet));display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;color:#fff;cursor:pointer;border:1.5px solid rgba(155,111,168,0.35);}
+
+/* ── APP BODY ── */
+.abody{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:var(–tab-h);}
+.abody::-webkit-scrollbar{display:none;}
+.page{display:none;}
+.page.active{display:block;}
+
+/* ── BOTTOM NAV ── */
+.bnav{height:var(–tab-h);background:var(–bg2);border-top:1px solid var(–border);display:flex;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:20;}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;position:relative;}
+.tic{font-size:1.1rem;line-height:1;transition:transform 0.15s;}
+.tlb{font-size:0.58rem;font-weight:600;color:var(–text-muted);letter-spacing:0.02em;transition:color 0.15s;}
+.tab.active .tlb{color:var(–lily);}
+.tab.active .tic{transform:scale(1.1);}
+.tbar{position:absolute;top:0;left:50%;transform:translateX(-50%);width:18px;height:2px;border-radius:1px;background:var(–lily);opacity:0;transition:opacity 0.15s;}
+.tab.active .tbar{opacity:1;}
+.tdot{position:absolute;top:6px;right:calc(50% - 14px);min-width:15px;height:15px;border-radius:50px;background:var(–rose);color:#fff;font-size:0.58rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 3px;border:2px solid var(–bg2);}
+
+/* ── EMPTY STATES ── */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3.5rem 2rem;text-align:center;}
+.empty-icon{font-size:2.5rem;margin-bottom:1rem;opacity:0.35;}
+.empty-title{font-family:‘Playfair Display’,serif;font-size:1.05rem;font-weight:700;margin-bottom:0.4rem;}
+.empty-sub{font-size:0.82rem;color:var(–text-muted);line-height:1.6;margin-bottom:1.4rem;}
+
+/* ── BUTTONS ── */
+.btn{padding:0.62rem 1.2rem;border-radius:9px;font-size:0.85rem;font-weight:600;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:0.35rem;transition:all 0.15s;font-family:‘DM Sans’,sans-serif;-webkit-appearance:none;}
+.btn:active{transform:scale(0.97);}
+.btn-primary{background:linear-gradient(135deg,var(–lily),var(–violet));color:#fff;}
+.btn-ghost{background:var(–surface2);border:1px solid var(–border);color:var(–text-soft);}
+.btn-full{width:100%;justify-content:center;}
+.btn-sm{padding:0.42rem 0.85rem;font-size:0.78rem;border-radius:7px;}
+.btn-outline{background:transparent;border:1.5px solid var(–lily);color:var(–lily-light);}
+
+/* ── SECTIONS ── */
+.sec{padding:1.1rem 1rem 0;}
+.sec-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.7rem;}
+.sec-title{font-family:‘Playfair Display’,serif;font-size:1.05rem;font-weight:700;}
+.see-all{font-size:0.76rem;color:var(–lily);font-weight:600;cursor:pointer;}
+
+/* ── GENRE FILTER ── */
+.frow{display:flex;gap:0.4rem;overflow-x:auto;padding:0.7rem 1rem;scrollbar-width:none;}
+.frow::-webkit-scrollbar{display:none;}
+.fp{flex-shrink:0;padding:0.3rem 0.8rem;border-radius:6px;font-size:0.75rem;font-weight:500;cursor:pointer;background:var(–surface2);border:1px solid var(–border);color:var(–text-muted);transition:all 0.15s;white-space:nowrap;}
+.fp.active,.fp:hover{background:rgba(155,111,168,0.12);border-color:var(–lily);color:var(–lily-light);}
+
+/* ── SERVICES CARDS ── */
+.serv-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;padding:0 1rem;}
+.serv{background:var(–bg3);border:1px solid var(–border);border-radius:12px;padding:1rem 0.9rem;cursor:pointer;transition:all 0.15s;}
+.serv:active{transform:scale(0.97);}
+.serv-title{font-size:0.88rem;font-weight:700;margin-bottom:0.2rem;}
+.serv-sub{font-size:0.72rem;color:var(–text-muted);line-height:1.4;}
+.serv-count{font-size:0.68rem;color:var(–lily);margin-top:0.4rem;font-weight:600;}
+
+/* ── STORY CARD (explore) ── */
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;padding:0.75rem 1rem;}
+.exp-card{background:var(–bg3);border-radius:11px;overflow:hidden;cursor:pointer;transition:transform 0.15s;border:1px solid var(–border);}
+.exp-card:active{transform:scale(0.97);}
+.exp-cover{width:100%;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;position:relative;font-size:2.5rem;}
+.exp-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,transparent 55%);}
+.exp-badge{position:absolute;top:6px;right:6px;padding:0.17rem 0.4rem;border-radius:4px;font-size:0.6rem;font-weight:700;background:rgba(0,0,0,0.65);border:1px solid rgba(255,255,255,0.1);}
+.exp-info{padding:0.55rem 0.65rem;}
+.exp-title{font-family:‘Playfair Display’,serif;font-size:0.85rem;font-weight:700;line-height:1.25;margin-bottom:0.15rem;}
+.exp-author{font-size:0.7rem;color:var(–text-muted);}
+.exp-stats{display:flex;gap:0.4rem;margin-top:0.25rem;font-size:0.67rem;color:var(–text-muted);}
+
+/* ── PRO CARD ── */
+.pro-card{border-bottom:1px solid var(–border);padding:1.1rem 1rem;}
+.pro-head{display:flex;gap:0.75rem;margin-bottom:0.65rem;}
+.pro-ava{width:52px;height:52px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#fff;}
+.pro-name{font-family:‘Playfair Display’,serif;font-size:0.92rem;font-weight:700;}
+.pro-role{font-size:0.73rem;color:var(–text-muted);margin-top:0.1rem;}
+.pro-rating{font-size:0.73rem;color:var(–gold);margin-top:0.12rem;}
+.pro-desc{font-size:0.82rem;color:var(–text-soft);line-height:1.55;margin-bottom:0.6rem;}
+.pro-tags{display:flex;flex-wrap:wrap;gap:0.28rem;margin-bottom:0.65rem;}
+.pro-tag{padding:0.16rem 0.48rem;border-radius:5px;font-size:0.66rem;font-weight:500;background:var(–surface2);border:1px solid var(–border);color:var(–text-muted);}
+.pro-port{display:flex;gap:0.35rem;margin-bottom:0.65rem;}
+.pro-port-img{width:70px;height:95px;border-radius:8px;overflow:hidden;background:var(–surface2);border:1px solid var(–border);display:flex;align-items:center;justify-content:center;color:var(–text-muted);font-size:0.7rem;}
+.pro-actions{display:flex;gap:0.45rem;}
+
+/* ── MSG ── */
+.msg-row{display:flex;gap:0.7rem;align-items:center;padding:0.85rem 1rem;border-bottom:1px solid var(–border);cursor:pointer;transition:background 0.1s;}
+.msg-row:active{background:var(–surface);}
+.mava{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff;}
+.minfo{flex:1;min-width:0;}
+.mname{font-weight:600;font-size:0.88rem;}
+.mprev{font-size:0.75rem;color:var(–text-muted);margin-top:0.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mright{display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;flex-shrink:0;}
+.mtime{font-size:0.67rem;color:var(–text-muted);}
+.udot{width:9px;height:9px;border-radius:50%;background:var(–lily);}
+
+/* ── NOTIF ── */
+.nrow{display:flex;gap:0.7rem;align-items:flex-start;padding:0.85rem 1rem;border-bottom:1px solid var(–border);cursor:pointer;}
+.nrow.unread{background:rgba(155,111,168,0.04);}
+.nic{width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.95rem;background:var(–surface2);}
+.nbody{flex:1;}
+.ntext{font-size:0.83rem;color:var(–text-soft);line-height:1.5;}
+.ntext strong{color:var(–text);font-weight:600;}
+.ntime{font-size:0.7rem;color:var(–text-muted);margin-top:0.2rem;}
+.ndot{width:7px;height:7px;border-radius:50%;background:var(–lily);flex-shrink:0;margin-top:5px;}
+
+/* ── PROFILE ── */
+.pbanner{height:100px;background:linear-gradient(160deg,#04020a 0%,#150830 50%,#0a0420 100%);position:relative;margin-bottom:42px;}
+.pava{position:absolute;bottom:-34px;left:1rem;width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(–lily),var(–violet));border:3px solid var(–bg);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:#fff;}
+.pinfo{padding:0 1rem;}
+.pname{font-family:‘Playfair Display’,serif;font-size:1.15rem;font-weight:700;}
+.phandle{font-size:0.76rem;color:var(–text-muted);}
+.pstats{display:flex;border:1px solid var(–border);border-radius:10px;overflow:hidden;margin:0.75rem 0;}
+.ps{flex:1;text-align:center;padding:0.65rem 0;border-right:1px solid var(–border);}
+.ps:last-child{border-right:none;}
+.psn{font-family:‘Playfair Display’,serif;font-size:1.05rem;font-weight:700;background:linear-gradient(135deg,var(–lily-light),var(–gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.psl{font-size:0.63rem;color:var(–text-muted);margin-top:0.1rem;}
+
+/* ── SETTINGS ── */
+.stsec{background:var(–bg3);border-top:1px solid var(–border);border-bottom:1px solid var(–border);margin-bottom:0.55rem;}
+.sttitle{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(–text-muted);padding:0.75rem 1rem 0.35rem;}
+.strow{display:flex;align-items:center;justify-content:space-between;padding:0.72rem 1rem;border-top:1px solid var(–border);}
+.stlabel{font-size:0.87rem;color:var(–text);}
+.stsub{font-size:0.7rem;color:var(–text-muted);margin-top:0.08rem;}
+.toggle{width:44px;height:26px;border-radius:50px;background:var(–surface2);border:1px solid var(–border);position:relative;cursor:pointer;transition:all 0.25s;flex-shrink:0;}
+.toggle.on{background:linear-gradient(135deg,var(–lily),var(–violet));border-color:transparent;}
+.toggle::after{content:’’;position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform 0.25s;box-shadow:0 1px 4px rgba(0,0,0,0.25);}
+.toggle.on::after{transform:translateX(18px);}
+
+/* ── LIB TABS ── */
+.ltabs{display:flex;border-bottom:1px solid var(–border);}
+.ltab{flex:1;text-align:center;padding:0.75rem 0;font-size:0.8rem;font-weight:600;color:var(–text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;}
+.ltab.active{color:var(–lily);border-bottom-color:var(–lily);}
+
+/* ── OVERLAYS ── */
+.overlay{position:fixed;inset:0;z-index:50;background:var(–bg);display:none;flex-direction:column;max-width:430px;margin:0 auto;}
+.overlay.open{display:flex;}
+.ovtop{height:var(–top-h);background:var(–bg2);border-bottom:1px solid var(–border);display:flex;align-items:center;gap:0.75rem;padding:0 1rem;flex-shrink:0;}
+.back{font-size:1.1rem;cursor:pointer;color:var(–text-soft);padding:0.25rem;}
+
+/* CHAT */
+.chatmsgs{flex:1;overflow-y:auto;padding:0.9rem 1rem;display:flex;flex-direction:column;gap:0.6rem;}
+.chatmsgs::-webkit-scrollbar{display:none;}
+.brow{display:flex;flex-direction:column;max-width:76%;}
+.brow.me{align-self:flex-end;align-items:flex-end;}
+.brow.them{align-self:flex-start;}
+.bub{padding:0.6rem 0.85rem;border-radius:14px;font-size:0.86rem;line-height:1.5;}
+.brow.me .bub{background:linear-gradient(135deg,var(–lily),var(–violet));color:#fff;border-radius:14px 14px 3px 14px;}
+.brow.them .bub{background:var(–bg3);border:1px solid var(–border);color:var(–text);border-radius:14px 14px 14px 3px;}
+.btime{font-size:0.63rem;color:var(–text-muted);margin-top:0.18rem;}
+.chatbar{padding:0.7rem 1rem;background:var(–bg2);border-top:1px solid var(–border);display:flex;gap:0.5rem;align-items:center;flex-shrink:0;}
+.chatinp{flex:1;background:var(–surface2);border:1px solid var(–border);border-radius:8px;padding:0.58rem 0.85rem;color:var(–text);font-size:0.86rem;outline:none;font-family:‘DM Sans’,sans-serif;-webkit-appearance:none;}
+.sendbtn{width:36px;height:36px;border-radius:8px;flex-shrink:0;background:var(–lily);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.9rem;}
+
+/* READER */
+.rprog{height:2px;background:linear-gradient(90deg,var(–lily),var(–gold));width:0%;transition:width 0.08s;}
+.rbody{flex:1;overflow-y:auto;padding:1.4rem 1rem 1.5rem;}
+.rbody::-webkit-scrollbar{display:none;}
+.rtitle{font-family:‘Playfair Display’,serif;font-size:1.6rem;font-weight:900;line-height:1.1;margin-bottom:0.4rem;}
+.rauthor{font-size:0.8rem;color:var(–text-muted);margin-bottom:1.2rem;}
+.rchap{font-family:‘Playfair Display’,serif;font-size:0.98rem;font-weight:700;color:var(–lily-light);margin:1.8rem 0 0.9rem;}
+.para{margin-bottom:0.85rem;}
+.ptxt{font-family:‘Lora’,serif;font-size:1rem;line-height:1.88;color:var(–text-soft);padding:0.25rem 0;border-radius:5px;cursor:pointer;transition:background 0.12s;}
+.ptxt:active,.ptxt.hl{background:rgba(155,111,168,0.08);}
+.pcnt{display:inline-flex;align-items:center;gap:0.2rem;font-size:0.7rem;color:var(–lily);margin-top:0.15rem;cursor:pointer;}
+.pcmts{display:none;margin:0.4rem 0 0.2rem 0.8rem;border-left:2px solid rgba(155,111,168,0.25);padding-left:0.7rem;}
+.pcmts.open{display:block;}
+.icmt{background:var(–bg3);border-radius:7px;padding:0.45rem 0.6rem;margin-bottom:0.3rem;}
+.icmt-u{font-size:0.7rem;font-weight:700;color:var(–lily-light);}
+.icmt-t{font-size:0.8rem;color:var(–text-soft);margin-top:0.1rem;line-height:1.4;}
+.iadd{display:flex;gap:0.4rem;align-items:center;margin-top:0.3rem;}
+.iinp{flex:1;background:var(–surface2);border:1px solid var(–border);border-radius:6px;padding:0.38rem 0.7rem;color:var(–text);font-size:0.78rem;outline:none;font-family:‘DM Sans’,sans-serif;-webkit-appearance:none;}
+.isend{width:28px;height:28px;border-radius:6px;flex-shrink:0;background:var(–lily);border:none;color:#fff;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.ractions{padding:0.65rem 1rem;background:var(–bg2);border-top:1px solid var(–border);display:flex;gap:0.45rem;flex-shrink:0;}
+
+/* MODAL */
+.mback{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,0.72);backdrop-filter:blur(6px);display:none;align-items:flex-end;max-width:430px;margin:0 auto;}
+.mback.open{display:flex;}
+.msheet{background:var(–bg3);border-radius:18px 18px 0 0;border-top:1px solid var(–border2);padding:1.2rem 1.2rem 2.2rem;width:100%;animation:sup 0.28s ease;}
+@keyframes sup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mhandle{width:32px;height:3px;background:var(–border2);border-radius:2px;margin:0 auto 1.1rem;}
+
+/* KOFI */
+.kofi-strip{margin:1rem;border-radius:10px;background:rgba(255,90,88,0.07);border:1px solid rgba(255,90,88,0.16);padding:0.8rem 0.9rem;display:flex;align-items:center;gap:0.7rem;cursor:pointer;}
+.kofi-strip:active{transform:scale(0.99);}
+.kofi-badge{background:#FF5A58;color:#fff;border-radius:6px;padding:0.28rem 0.6rem;font-size:0.74rem;font-weight:700;white-space:nowrap;flex-shrink:0;}
+.kofi-opt{background:var(–surface2);border:1px solid var(–border);border-radius:10px;padding:0.65rem 0.4rem;text-align:center;cursor:pointer;transition:all 0.15s;}
+.kofi-opt.active{background:rgba(255,90,88,0.12);border-color:rgba(255,90,88,0.35);}
+
+/* WRITE FORM */
+.wform{padding:1rem;}
+.wform .finput{margin-bottom:0.75rem;}
+.wform textarea{width:100%;background:var(–surface2);border:1px solid var(–border);border-radius:9px;padding:0.72rem 0.88rem;color:var(–text);font-family:‘Lora’,serif;font-size:0.92rem;outline:none;min-height:200px;resize:none;-webkit-appearance:none;transition:border-color 0.2s;}
+.wform textarea:focus{border-color:var(–lily);}
+.wform textarea::placeholder{color:var(–text-muted);font-family:‘Lora’,serif;}
+.wgenres{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:0.75rem;}
+.wg{padding:0.28rem 0.7rem;border-radius:6px;font-size:0.75rem;cursor:pointer;background:var(–surface2);border:1px solid var(–border);color:var(–text-muted);transition:all 0.15s;}
+.wg.sel{background:rgba(155,111,168,0.15);border-color:var(–lily);color:var(–lily-light);}
+
+/* TOAST */
+#toast{position:fixed;bottom:calc(var(–tab-h) + 0.75rem);left:50%;transform:translateX(-50%) translateY(50px);background:var(–bg3);border:1px solid var(–border2);color:var(–text);padding:0.6rem 1.3rem;border-radius:8px;font-size:0.82rem;font-weight:500;z-index:100;transition:transform 0.3s cubic-bezier(.34,1.56,.64,1),opacity 0.25s;opacity:0;pointer-events:none;white-space:nowrap;box-shadow:0 4px 18px rgba(0,0,0,0.45);}
+
+/* STARS */
+.stars-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+[data-theme=“light”] .stars-bg{display:none;}
+.s{position:absolute;border-radius:50%;animation:tw var(–d) ease-in-out infinite var(–dl);opacity:0;}
+@keyframes tw{0%,100%{opacity:0}50%{opacity:var(–o)}}
+</style>
+
+</head>
+<body>
+
+<div class="stars-bg" id="starsBg"></div>
+
+<!-- ══ AUTH ══ -->
+
+<div class="screen active" id="authScreen">
+  <div class="auth-bg">
+    <div class="auth-gradient"></div>
+    <svg class="auth-lily" style="top:4%;left:7%;width:70px;height:100px" viewBox="0 0 70 100" fill="none">
+      <ellipse cx="35" cy="25" rx="6" ry="14" fill="none" stroke="#9b6fa8" stroke-width="0.8"/>
+      <ellipse cx="22" cy="23" rx="5" ry="11" fill="none" stroke="#9b6fa8" stroke-width="0.7" transform="rotate(-28 22 23)"/>
+      <ellipse cx="48" cy="23" rx="5" ry="11" fill="none" stroke="#9b6fa8" stroke-width="0.7" transform="rotate(28 48 23)"/>
+      <path d="M35 39 Q34 52 32 65" stroke="#9b6fa8" stroke-width="0.8" stroke-linecap="round"/>
+      <path d="M33 50 Q27 46 26 51 Q31 52 33 50Z" fill="#9b6fa8" opacity="0.3"/>
+      <circle cx="35" cy="19" r="2.2" fill="#c8963c" opacity="0.55"/>
+    </svg>
+    <svg class="auth-lily" style="top:10%;right:5%;width:52px;height:76px" viewBox="0 0 52 76" fill="none">
+      <ellipse cx="26" cy="18" rx="4.5" ry="11" fill="none" stroke="#9b6fa8" stroke-width="0.7"/>
+      <ellipse cx="16" cy="17" rx="3.5" ry="8.5" fill="none" stroke="#9b6fa8" stroke-width="0.6" transform="rotate(-25 16 17)"/>
+      <ellipse cx="36" cy="17" rx="3.5" ry="8.5" fill="none" stroke="#9b6fa8" stroke-width="0.6" transform="rotate(25 36 17)"/>
+      <path d="M26 29 Q25.5 38 24 50" stroke="#9b6fa8" stroke-width="0.7" stroke-linecap="round"/>
+      <circle cx="26" cy="14" r="1.6" fill="#c8963c" opacity="0.45"/>
+    </svg>
+  </div>
+
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;padding:2rem">
+    <div style="text-align:center">
+      <svg width="68" height="68" viewBox="0 0 68 68" fill="none" style="display:block;margin:0 auto 0.8rem">
+        <rect width="68" height="68" rx="17" fill="#0d0618"/>
+        <ellipse cx="12" cy="19" rx="2.2" ry="5" fill="none" stroke="#9b6fa8" stroke-width="0.75" opacity="0.5"/>
+        <ellipse cx="8.5" cy="18" rx="1.8" ry="4" fill="none" stroke="#9b6fa8" stroke-width="0.65" transform="rotate(-22 8.5 18)" opacity="0.4"/>
+        <path d="M12 24 Q11.5 29 11 35" stroke="#9b6fa8" stroke-width="0.75" stroke-linecap="round" opacity="0.4"/>
+        <path d="M11.5 27.5 Q8.5 26 8 29 Q10.5 29.5 11.5 27.5Z" fill="#9b6fa8" opacity="0.2"/>
+        <circle cx="12" cy="17" r="1.1" fill="#c8963c" opacity="0.55"/>
+        <ellipse cx="56" cy="49" rx="2.2" ry="5" fill="none" stroke="#9b6fa8" stroke-width="0.75" opacity="0.4"/>
+        <path d="M56 44 Q56.5 39 57 33" stroke="#9b6fa8" stroke-width="0.65" stroke-linecap="round" opacity="0.35"/>
+        <circle cx="56" cy="51.5" r="1.1" fill="#c8963c" opacity="0.45"/>
+        <text x="34" y="48" text-anchor="middle" font-size="34" font-family="Playfair Display,Georgia,serif" font-style="italic" font-weight="700" fill="url(#lg1)">E</text>
+        <defs><linearGradient id="lg1" x1="18" y1="18" x2="50" y2="54" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#c4a0d8"/><stop offset="100%" stop-color="#c8963c"/></linearGradient></defs>
+      </svg>
+      <div style="font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;font-style:italic;background:linear-gradient(135deg,#c4a0d8,#9b6fa8,#c8963c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:0.25rem">Erlya</div>
+      <div style="font-family:'Lora',serif;font-style:italic;font-size:0.83rem;color:var(--text-muted)">Lis. Écris. Partage.</div>
+    </div>
+  </div>
+
+  <div class="auth-panel" id="authPanel">
+    <div id="loginView">
+      <div style="font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;margin-bottom:0.2rem">Bon retour</div>
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.2rem">Connecte-toi pour continuer</div>
+
+```
+  <button class="social-btn" onclick="socialLogin('Apple')">
+    <svg class="s-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M14.1.9c-1.2 0-2.5.8-3.3 2C10 4 9.5 5.4 9.7 6.7c1.3.1 2.6-.7 3.4-1.8.8-1 1.3-2.5 1-4zM17.8 14c-.6 1.4-.9 2-1.7 3.1-1.1 1.6-2.3 3-3.8 3-.4 0-.8-.1-1.2-.2-.5-.2-1-.3-1.6-.3-.6 0-1.1.1-1.6.3-.4.1-.8.2-1.2.2-1.5 0-2.7-1.4-3.8-3C1.5 15 .5 12.2.5 9.5c0-4.2 2.7-6.4 5.4-6.4 1.4 0 2.6.8 3.5.8.9 0 2.3-.9 3.9-.9 1.3 0 2.8.5 3.8 1.8-3.3 1.8-2.8 6.5.7 7.6-.1.5-.2.9-.5 1.6z"/></svg>
+    Continuer avec Apple
+  </button>
+  <button class="social-btn" onclick="socialLogin('Google')">
+    <svg class="s-icon" viewBox="0 0 20 20" fill="none"><path d="M19.8 10.2c0-.7-.1-1.4-.2-2H10v3.8h5.5c-.2 1.3-1 2.4-2.1 3.1v2.6h3.4c2-1.8 3-4.5 3-7.5z" fill="#4285F4"/><path d="M10 20c2.8 0 5.2-.9 6.8-2.5l-3.4-2.6c-.9.6-2.1 1-3.4 1-2.6 0-4.9-1.8-5.7-4.2H.8v2.6C2.4 17.7 6 20 10 20z" fill="#34A853"/><path d="M4.3 11.7C4.1 11 4 10.5 4 10s.1-1 .3-1.7V5.7H.8C.3 6.8 0 8.3 0 10s.3 3.2.8 4.3l3.5-2.6z" fill="#FBBC05"/><path d="M10 4c1.5 0 2.8.5 3.8 1.5l2.8-2.8C14.7 1 12.5 0 10 0 6 0 2.5 2.3.8 5.7l3.5 2.6C5.1 5.8 7.3 4 10 4z" fill="#EA4335"/></svg>
+    Continuer avec Google
+  </button>
+
+  <div class="divrow"><div class="divline"></div><span class="divtxt">ou par email</span><div class="divline"></div></div>
+
+  <label class="flabel">Email</label>
+  <input class="finput" type="email" placeholder="ton@email.com" id="lEmail">
+  <label class="flabel">Mot de passe</label>
+  <input class="finput" type="password" placeholder="••••••••" id="lPwd">
+  <button class="btn btn-primary btn-full" onclick="emailLogin()">Se connecter</button>
+  <div class="aswitch">Pas de compte ? <a onclick="showReg()">S'inscrire gratuitement</a></div>
+</div>
+
+<div id="regView" style="display:none">
+  <div style="font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;margin-bottom:0.2rem">Créer un compte</div>
+  <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:1.2rem">Gratuit, sans pub, pour toujours</div>
+
+  <button class="social-btn" onclick="socialLogin('Apple')">
+    <svg class="s-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M14.1.9c-1.2 0-2.5.8-3.3 2C10 4 9.5 5.4 9.7 6.7c1.3.1 2.6-.7 3.4-1.8.8-1 1.3-2.5 1-4zM17.8 14c-.6 1.4-.9 2-1.7 3.1-1.1 1.6-2.3 3-3.8 3-.4 0-.8-.1-1.2-.2-.5-.2-1-.3-1.6-.3-.6 0-1.1.1-1.6.3-.4.1-.8.2-1.2.2-1.5 0-2.7-1.4-3.8-3C1.5 15 .5 12.2.5 9.5c0-4.2 2.7-6.4 5.4-6.4 1.4 0 2.6.8 3.5.8.9 0 2.3-.9 3.9-.9 1.3 0 2.8.5 3.8 1.8-3.3 1.8-2.8 6.5.7 7.6-.1.5-.2.9-.5 1.6z"/></svg>
+    S'inscrire avec Apple
+  </button>
+  <button class="social-btn" onclick="socialLogin('Google')">
+    <svg class="s-icon" viewBox="0 0 20 20" fill="none"><path d="M19.8 10.2c0-.7-.1-1.4-.2-2H10v3.8h5.5c-.2 1.3-1 2.4-2.1 3.1v2.6h3.4c2-1.8 3-4.5 3-7.5z" fill="#4285F4"/><path d="M10 20c2.8 0 5.2-.9 6.8-2.5l-3.4-2.6c-.9.6-2.1 1-3.4 1-2.6 0-4.9-1.8-5.7-4.2H.8v2.6C2.4 17.7 6 20 10 20z" fill="#34A853"/><path d="M4.3 11.7C4.1 11 4 10.5 4 10s.1-1 .3-1.7V5.7H.8C.3 6.8 0 8.3 0 10s.3 3.2.8 4.3l3.5-2.6z" fill="#FBBC05"/><path d="M10 4c1.5 0 2.8.5 3.8 1.5l2.8-2.8C14.7 1 12.5 0 10 0 6 0 2.5 2.3.8 5.7l3.5 2.6C5.1 5.8 7.3 4 10 4z" fill="#EA4335"/></svg>
+    S'inscrire avec Google
+  </button>
+
+  <div class="divrow"><div class="divline"></div><span class="divtxt">ou par email</span><div class="divline"></div></div>
+
+  <label class="flabel">Pseudonyme</label>
+  <input class="finput" type="text" placeholder="Visible par tous" id="rPseudo">
+  <label class="flabel">Email</label>
+  <input class="finput" type="email" placeholder="ton@email.com" id="rEmail">
+  <label class="flabel">Mot de passe</label>
+  <input class="finput" type="password" placeholder="8 caractères minimum" id="rPwd">
+  <button class="btn btn-primary btn-full" onclick="doRegister()">Créer mon compte</button>
+  <div class="aterms">En créant un compte tu acceptes les <span style="color:var(--lily-light);cursor:pointer">CGU</span> d'Erlya.</div>
+  <div class="aswitch">Déjà un compte ? <a onclick="showLogin()">Se connecter</a></div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+
+<div class="screen" id="appScreen">
+  <div class="topbar">
+    <div class="logo-row" onclick="goTab('home')">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+        <rect width="26" height="26" rx="6.5" fill="#0d0618"/>
+        <text x="13" y="20" text-anchor="middle" font-size="16" font-family="Playfair Display,Georgia,serif" font-style="italic" font-weight="700" fill="url(#lg2)">E</text>
+        <defs><linearGradient id="lg2" x1="5" y1="6" x2="21" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#c4a0d8"/><stop offset="100%" stop-color="#c8963c"/></linearGradient></defs>
+        <ellipse cx="4.5" cy="7.5" rx="1" ry="2.5" fill="none" stroke="#9b6fa8" stroke-width="0.5" opacity="0.5"/>
+        <circle cx="4.5" cy="6" r="0.65" fill="#c8963c" opacity="0.55"/>
+      </svg>
+      <span class="logo-txt">Erlya</span>
+    </div>
+    <div class="sw">
+      <span class="sic">⌕</span>
+      <input class="sinput" type="text" placeholder="Rechercher..." id="searchInp" oninput="handleSearch(this.value)">
+    </div>
+    <div style="display:flex;gap:0.45rem;align-items:center">
+      <button class="icon-btn" onclick="toggleTheme()">◑</button>
+      <div class="uava" id="uAva" onclick="goTab('profile')">?</div>
+    </div>
+  </div>
+
+  <div class="abody" id="abody">
+
+```
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="sec" style="padding-bottom:1rem">
+    <div class="sec-row">
+      <div class="sec-title">Découvrir</div>
+      <span class="see-all" onclick="goTab('explore')">Explorer</span>
+    </div>
+    <!-- Genre filters -->
+    <div class="frow" id="homeFilter"></div>
+  </div>
+
+  <!-- Empty explore state -->
+  <div id="homeStoriesWrap">
+    <div class="empty" style="padding:2rem">
+      <div class="empty-icon">📖</div>
+      <div class="empty-title">Aucune histoire pour l'instant</div>
+      <div class="empty-sub">Sois le premier à publier une histoire sur Erlya. La communauté t'attend.</div>
+      <button class="btn btn-primary" onclick="goTab('write')">Écrire une histoire</button>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <div class="sec" style="padding-top:0.5rem">
+    <div class="sec-title" style="margin-bottom:0.7rem">Services</div>
+    <div class="serv-grid">
+      <div class="serv" onclick="goTab('graphisme')">
+        <div class="serv-title">Couvertures</div>
+        <div class="serv-sub">Graphistes disponibles pour illustrer votre histoire</div>
+        <div class="serv-count" id="graphCount">0 graphiste inscrit</div>
+      </div>
+      <div class="serv" onclick="goTab('correction')">
+        <div class="serv-title">Correction</div>
+        <div class="serv-sub">Correctrices professionnelles pour votre manuscrit</div>
+        <div class="serv-count" id="corrCount">0 correctrice inscrite</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kofi-strip" onclick="openKofi()">
+    <div style="font-size:1.1rem;flex-shrink:0">☕</div>
+    <div style="flex:1">
+      <div style="font-size:0.82rem;font-weight:700">Erlya est gratuit grâce à vous</div>
+      <div style="font-size:0.7rem;color:var(--text-muted);margin-top:0.1rem">Offrez un café pour soutenir la plateforme</div>
+    </div>
+    <div class="kofi-badge">Soutenir</div>
+  </div>
+  <div style="height:0.5rem"></div>
+</div>
+
+<!-- EXPLORE -->
+<div class="page" id="page-explore">
+  <div class="frow" id="expFilter" style="padding:0.75rem 1rem"></div>
+  <div id="expGrid">
+    <div class="empty">
+      <div class="empty-icon">🔭</div>
+      <div class="empty-title">Aucune histoire publiée</div>
+      <div class="empty-sub">Les histoires publiées par la communauté apparaîtront ici.</div>
+      <button class="btn btn-primary" onclick="goTab('write')">Publier la première</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIBRARY -->
+<div class="page" id="page-library">
+  <div class="ltabs">
+    <div class="ltab active" onclick="lTab(this,'reading')">En cours</div>
+    <div class="ltab" onclick="lTab(this,'toread')">À lire</div>
+    <div class="ltab" onclick="lTab(this,'done')">Terminées</div>
+  </div>
+  <div id="lib-reading">
+    <div class="empty">
+      <div class="empty-icon">📚</div>
+      <div class="empty-title">Aucune lecture en cours</div>
+      <div class="empty-sub">Les histoires que vous lisez apparaîtront ici.</div>
+      <button class="btn btn-ghost" onclick="goTab('explore')">Parcourir les histoires</button>
+    </div>
+  </div>
+  <div id="lib-toread" style="display:none">
+    <div class="empty">
+      <div class="empty-icon">🔖</div>
+      <div class="empty-title">Votre liste est vide</div>
+      <div class="empty-sub">Ajoutez des histoires à lire plus tard.</div>
+    </div>
+  </div>
+  <div id="lib-done" style="display:none">
+    <div class="empty">
+      <div class="empty-icon">✓</div>
+      <div class="empty-title">Aucune histoire terminée</div>
+      <div class="empty-sub">Vos lectures terminées apparaîtront ici.</div>
+    </div>
+  </div>
+</div>
+
+<!-- WRITE -->
+<div class="page" id="page-write">
+  <div id="writeMain">
+    <div class="empty">
+      <div class="empty-icon">✦</div>
+      <div class="empty-title">Commencez à écrire</div>
+      <div class="empty-sub">Créez votre première histoire et partagez-la avec la communauté Erlya.</div>
+      <button class="btn btn-primary" onclick="showWriteForm()">+ Nouvelle histoire</button>
+    </div>
+  </div>
+  <div id="writeForm" style="display:none">
+    <div class="ovtop" style="position:sticky;top:0;z-index:5">
+      <span class="back" onclick="hideWriteForm()">‹</span>
+      <div style="flex:1;font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem">Nouvelle histoire</div>
+      <button class="btn btn-primary btn-sm" onclick="publishStory()">Publier</button>
+    </div>
+    <div class="wform">
+      <label class="flabel">Titre</label>
+      <input class="finput" type="text" placeholder="Le titre de votre histoire" id="wTitle">
+      <label class="flabel">Genre</label>
+      <div class="wgenres" id="wGenres"></div>
+      <label class="flabel">Contenu adulte</label>
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem">
+        <div class="toggle" id="adultToggle" onclick="this.classList.toggle('on')"></div>
+        <span style="font-size:0.82rem;color:var(--text-muted)">Cette histoire contient du contenu 18+</span>
+      </div>
+      <label class="flabel">Résumé</label>
+      <input class="finput" type="text" placeholder="Une phrase qui donne envie de lire..." id="wSummary">
+      <label class="flabel">Premier chapitre</label>
+      <textarea id="wContent" placeholder="Il était une fois..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- MESSAGES -->
+<div class="page" id="page-messages">
+  <div style="padding:0.75rem 1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)">
+    <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted)">Conversations</div>
+    <button class="btn btn-ghost btn-sm" onclick="toast('Nouveau message')">+ Nouveau</button>
+  </div>
+  <div id="convList">
+    <div class="empty">
+      <div class="empty-icon">✉</div>
+      <div class="empty-title">Aucun message</div>
+      <div class="empty-sub">Vos conversations avec des auteurs, graphistes et correctrices apparaîtront ici.</div>
+    </div>
+  </div>
+</div>
+
+<!-- GRAPHISME -->
+<div class="page" id="page-graphisme">
+  <div style="padding:1rem 1rem 0.5rem;border-bottom:1px solid var(--border)">
+    <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:0.2rem">Graphistes</div>
+    <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.75rem">Trouvez un graphiste pour illustrer votre couverture</div>
+    <div class="frow" style="padding:0;margin-bottom:0" id="graphFilter"></div>
+  </div>
+  <div id="graphList">
+    <div class="empty">
+      <div class="empty-icon">◻</div>
+      <div class="empty-title">Aucun graphiste inscrit</div>
+      <div class="empty-sub">Les graphistes qui créent un profil apparaîtront ici. Vous êtes graphiste ?</div>
+      <button class="btn btn-primary" onclick="showCreateProModal('graphiste')">Créer mon profil graphiste</button>
+    </div>
+  </div>
+</div>
+
+<!-- CORRECTION -->
+<div class="page" id="page-correction">
+  <div style="padding:1rem 1rem 0.5rem;border-bottom:1px solid var(--border)">
+    <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:0.2rem">Correctrices</div>
+    <div style="font-size:0.78rem;color:var(--text-muted)">Trouvez une correctrice pour votre manuscrit</div>
+  </div>
+  <div id="corrList">
+    <div class="empty">
+      <div class="empty-icon">◈</div>
+      <div class="empty-title">Aucune correctrice inscrite</div>
+      <div class="empty-sub">Les correctrices qui créent un profil apparaîtront ici. Vous êtes correctrice ?</div>
+      <button class="btn btn-primary" onclick="showCreateProModal('correctrice')">Créer mon profil correctrice</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div class="page" id="page-notifications">
+  <div style="padding:0.75rem 1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)">
+    <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted)">Notifications</div>
+    <span class="see-all" onclick="toast('Tout marqué comme lu')">Tout lire</span>
+  </div>
+  <div id="notifList">
+    <div class="empty">
+      <div class="empty-icon">◉</div>
+      <div class="empty-title">Aucune notification</div>
+      <div class="empty-sub">Vous serez notifié des nouveaux commentaires, abonnés et messages ici.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="page" id="page-profile">
+  <div class="pbanner"><div class="pava" id="pAva">?</div></div>
+  <div class="pinfo">
+    <div class="pname" id="pName">—</div>
+    <div class="phandle" id="pHandle">—</div>
+    <div style="display:flex;gap:0.45rem;margin:0.65rem 0">
+      <button class="btn btn-ghost btn-sm" onclick="goTab('settings')">Modifier le profil</button>
+      <button class="btn btn-ghost btn-sm" onclick="toast('Lien copié')">Partager</button>
+    </div>
+    <div class="pstats">
+      <div class="ps"><div class="psn" id="psStories">0</div><div class="psl">Histoires</div></div>
+      <div class="ps"><div class="psn" id="psFollowers">0</div><div class="psl">Abonnés</div></div>
+      <div class="ps"><div class="psn" id="psReads">0</div><div class="psl">Lectures</div></div>
+      <div class="ps"><div class="psn" id="psLikes">0</div><div class="psl">Likes</div></div>
+    </div>
+  </div>
+  <div style="padding:0 1rem;margin-top:0.5rem">
+    <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:0.5rem">Mes publications</div>
+  </div>
+  <div id="profileStories">
+    <div style="padding:1.5rem 1rem;text-align:center">
+      <div style="font-size:0.82rem;color:var(--text-muted)">Vous n'avez pas encore publié d'histoire.</div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:0.75rem" onclick="goTab('write')">Commencer à écrire</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="page" id="page-settings">
+  <div style="padding:1.2rem 1rem 0.5rem"><div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700">Paramètres</div></div>
+  <div class="stsec">
+    <div class="sttitle">Compte</div>
+    <div class="strow"><div><div class="stlabel">Pseudonyme</div><div class="stsub" id="stPseudo">—</div></div><button class="btn btn-ghost btn-sm" onclick="toast('Modifier le pseudonyme')">Modifier</button></div>
+    <div class="strow"><div><div class="stlabel">Email</div><div class="stsub" id="stEmail">—</div></div></div>
+    <div class="strow"><div><div class="stlabel">Mot de passe</div></div><button class="btn btn-ghost btn-sm" onclick="toast('Email de réinitialisation envoyé')">Changer</button></div>
+  </div>
+  <div class="stsec">
+    <div class="sttitle">Apparence</div>
+    <div class="strow"><div><div class="stlabel">Mode sombre</div></div><div class="toggle on" id="darkT" onclick="this.classList.toggle('on');toggleTheme()"></div></div>
+  </div>
+  <div class="stsec">
+    <div class="sttitle">Contenu</div>
+    <div class="strow"><div><div class="stlabel">Afficher le contenu adulte (18+)</div><div class="stsub">Dark romance, smut, contenu explicite</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+    <div class="strow"><div><div class="stlabel">Avertissements de contenu</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+  </div>
+  <div class="stsec">
+    <div class="sttitle">Notifications email</div>
+    <div class="strow"><div><div class="stlabel">Nouveaux messages</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+    <div class="strow"><div><div class="stlabel">Nouveau chapitre publié</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+    <div class="strow"><div><div class="stlabel">Réponse graphiste / correctrice</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+    <div class="strow"><div><div class="stlabel">Email</div></div><button class="btn btn-ghost btn-sm" onclick="toast('Email configuré')">Configurer</button></div>
+  </div>
+  <div class="stsec">
+    <div class="strow" onclick="logout()" style="cursor:pointer"><div class="stlabel" style="color:var(--rose)">Se déconnecter</div></div>
+  </div>
+  <div style="height:1rem"></div>
+</div>
+```
+
+  </div><!-- end abody -->
+
+  <div class="bnav">
+    <div class="tab active" id="tab-home" onclick="goTab('home')"><div class="tbar"></div><span class="tic">⌂</span><span class="tlb">Accueil</span></div>
+    <div class="tab" id="tab-explore" onclick="goTab('explore')"><div class="tbar"></div><span class="tic">◎</span><span class="tlb">Explorer</span></div>
+    <div class="tab" id="tab-write" onclick="goTab('write')"><div class="tbar"></div><span class="tic">✦</span><span class="tlb">Écrire</span></div>
+    <div class="tab" id="tab-messages" onclick="goTab('messages')"><div class="tbar"></div><span class="tic">✉</span><span class="tlb">Messages</span><span class="tdot" id="msgDot" style="display:none">0</span></div>
+    <div class="tab" id="tab-notifications" onclick="goTab('notifications')"><div class="tbar"></div><span class="tic">◉</span><span class="tlb">Notifs</span><span class="tdot" id="notifDot" style="display:none">0</span></div>
+  </div>
+</div>
+
+<!-- CHAT OVERLAY -->
+
+<div class="overlay" id="chatScreen">
+  <div class="ovtop">
+    <span class="back" onclick="closeChat()">‹</span>
+    <div class="mava" id="cAva" style="width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.88rem;font-weight:700;color:#fff"></div>
+    <div><div style="font-weight:700;font-size:0.88rem" id="cName">—</div><div style="font-size:0.67rem;color:var(--text-muted)">En ligne</div></div>
+  </div>
+  <div class="chatmsgs" id="chatMsgs"></div>
+  <div class="chatbar">
+    <input class="chatinp" id="chatInp" placeholder="Message..." onkeypress="if(event.key==='Enter')sendMsg()">
+    <button class="sendbtn" onclick="sendMsg()">›</button>
+  </div>
+</div>
+
+<!-- READER OVERLAY -->
+
+<div class="overlay" id="readerScreen">
+  <div class="ovtop">
+    <span class="back" onclick="closeReader()">‹</span>
+    <div style="flex:1;text-align:center"><div style="font-weight:700;font-size:0.85rem" id="rTit">—</div><div style="font-size:0.67rem;color:var(--text-muted)" id="rAuth">—</div></div>
+    <div style="display:flex;gap:0.25rem">
+      <button style="background:none;border:none;color:var(--text-muted);font-size:0.78rem;cursor:pointer;padding:0.25rem" onclick="rfSz(-1)">A−</button>
+      <button style="background:none;border:none;color:var(--text-muted);font-size:0.78rem;cursor:pointer;padding:0.25rem" onclick="rfSz(1)">A+</button>
+    </div>
+  </div>
+  <div class="rprog" id="rProg"></div>
+  <div class="rbody" id="rBody" onscroll="updProg()"></div>
+  <div class="ractions">
+    <button class="btn btn-ghost btn-sm" onclick="toast('Ajouté aux favoris')">Aimer</button>
+    <button class="btn btn-ghost btn-sm" onclick="toast('Sauvegardé')">Sauvegarder</button>
+    <button class="btn btn-ghost btn-sm" onclick="toast('Lien copié')">Partager</button>
+    <button class="btn btn-primary btn-sm" style="margin-left:auto">Suivant</button>
+  </div>
+</div>
+
+<!-- CREATE PRO MODAL -->
+
+<div class="mback" id="proModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:0.25rem" id="proModalTitle">Créer mon profil</div>
+    <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem" id="proModalSub">—</div>
+    <label class="flabel">Nom / Pseudo professionnel</label>
+    <input class="finput" type="text" placeholder="Votre nom affiché" id="proName">
+    <label class="flabel">Spécialité</label>
+    <input class="finput" type="text" placeholder="ex: Romance, Fantasy, Tous genres..." id="proSpec">
+    <label class="flabel">Description</label>
+    <textarea class="finput" style="min-height:70px;resize:none;font-family:'DM Sans',sans-serif" placeholder="Décrivez vos services..." id="proDesc"></textarea>
+    <label class="flabel">Tarif indicatif</label>
+    <input class="finput" type="text" placeholder="ex: Dès 25€, 0,008€/mot..." id="proPrice">
+    <button class="btn btn-primary btn-full" onclick="createProProfile()">Créer mon profil</button>
+  </div>
+</div>
+
+<!-- KOFI MODAL -->
+
+<div class="mback" id="kofiModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div style="text-align:center;margin-bottom:1rem">
+      <div style="font-size:2rem;margin-bottom:0.5rem">☕</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:0.25rem">Soutenir Erlya</div>
+      <div style="font-size:0.8rem;color:var(--text-muted);line-height:1.5">Erlya est 100% gratuit et sans publicité.<br>Un café nous aide à continuer.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-bottom:0.85rem">
+      <div class="kofi-opt active" onclick="selKofi(this)"><div style="font-size:1rem;margin-bottom:0.2rem">☕</div><div style="font-weight:700;font-size:0.88rem">3€</div></div>
+      <div class="kofi-opt" onclick="selKofi(this)"><div style="font-size:1rem;margin-bottom:0.2rem">☕☕</div><div style="font-weight:700;font-size:0.88rem">5€</div></div>
+      <div class="kofi-opt" onclick="selKofi(this)"><div style="font-size:1rem;margin-bottom:0.2rem">★</div><div style="font-weight:700;font-size:0.88rem">10€</div></div>
+    </div>
+    <button class="btn btn-full" style="background:#FF5A58;color:#fff;margin-bottom:0.4rem" onclick="document.getElementById('kofiModal').classList.remove('open');window.open('https://ko-fi.com','_blank');toast('Merci pour votre soutien !')">Offrir sur Ko-fi</button>
+    <button class="btn btn-ghost btn-full" onclick="document.getElementById('kofiModal').classList.remove('open')">Plus tard</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// PWA manifest
+const mf={name:"Erlya",short_name:"Erlya",start_url:"./index.html",display:"standalone",background_color:"#04020a",theme_color:"#04020a",orientation:"portrait",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='110' fill='%2304020a'/><text y='370' x='256' text-anchor='middle' font-size='290' font-family='Georgia,serif' font-style='italic' font-weight='700' fill='%23c4a0d8'>E</text></svg>",sizes:"512x512",type:"image/svg+xml"}]};
+const bl=new Blob([JSON.stringify(mf)],{type:'application/json'});
+const lk=document.createElement('link');lk.rel='manifest';lk.href=URL.createObjectURL(bl);document.head.appendChild(lk);
+
+// ── STATE ──
+let user=null;
+let stories=[];
+let graphistes=[];
+let correctrices=[];
+let convs=[];
+let activeChatId=null;
+let activeProType='graphiste';
+let rFontSz=1;
+
+const GENRES=["Tous","Romance","Dark Romance","Smut","Romantasy","Fantasy","Thriller","Science-Fiction","Horreur","Historique","LGBT+","Poésie","New Adult"];
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  generateStars();
+  renderGenreFilters();
+  const saved=localStorage.getItem('erlya_user');
+  if(saved){user=JSON.parse(saved);enterApp();}
+  const savedStories=localStorage.getItem('erlya_stories');
+  if(savedStories)stories=JSON.parse(savedStories);
+  const savedG=localStorage.getItem('erlya_graphistes');
+  if(savedG)graphistes=JSON.parse(savedG);
+  const savedC=localStorage.getItem('erlya_correctrices');
+  if(savedC)correctrices=JSON.parse(savedC);
+  const savedConvs=localStorage.getItem('erlya_convs');
+  if(savedConvs)convs=JSON.parse(savedConvs);
+});
+
+function generateStars(){
+  const bg=document.getElementById('starsBg');
+  const cols=['#ffffff','#c4a0d8','#c8963c'];
+  for(let i=0;i<80;i++){
+    const s=document.createElement('div');s.className='s';
+    const sz=Math.random()*1.2+0.2;
+    s.style.cssText=`width:${sz}px;height:${sz}px;background:${cols[Math.floor(Math.random()*cols.length)]};top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${Math.random()*5+3}s;--dl:-${Math.random()*5}s;--o:${Math.random()*0.3+0.04}`;
+    bg.appendChild(s);
+  }
+}
+
+function renderGenreFilters(){
+  ['homeFilter','expFilter'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.innerHTML=GENRES.map((g,i)=>`<button class="fp ${i===0?'active':''}" onclick="filterPill(this)">${g}</button>`).join('');
+  });
+  const wg=document.getElementById('wGenres');
+  if(wg) wg.innerHTML=GENRES.slice(1).map(g=>`<button class="wg" onclick="this.classList.toggle('sel')">${g}</button>`).join('');
+  const gf=document.getElementById('graphFilter');
+  if(gf) gf.innerHTML=["Tous","Romance","Fantasy","Dark","Minimaliste","Illustration"].map((g,i)=>`<button class="fp ${i===0?'active':''}" onclick="filterPill(this)">${g}</button>`).join('');
+}
+
+function filterPill(el){el.closest('.frow')?.querySelectorAll('.fp').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
+
+// ── AUTH ──
+function showReg(){document.getElementById('loginView').style.display='none';document.getElementById('regView').style.display='block';}
+function showLogin(){document.getElementById('regView').style.display='none';document.getElementById('loginView').style.display='block';}
+
+function socialLogin(provider){
+  const pseudo=provider+'User'+Math.floor(Math.random()*9999);
+  user={pseudo,email:`user@${provider.toLowerCase()}.com`,avatar:provider[0]};
+  localStorage.setItem('erlya_user',JSON.stringify(user));
+  enterApp();toast('Connecté avec '+provider);
+}
+
+function emailLogin(){
+  const email=document.getElementById('lEmail').value.trim();
+  const pwd=document.getElementById('lPwd').value;
+  if(!email||!pwd){toast('Remplissez tous les champs');return;}
+  user={pseudo:email.split('@')[0],email,avatar:email[0].toUpperCase()};
+  localStorage.setItem('erlya_user',JSON.stringify(user));
+  enterApp();
+}
+
+function doRegister(){
+  const pseudo=document.getElementById('rPseudo').value.trim();
+  const email=document.getElementById('rEmail').value.trim();
+  const pwd=document.getElementById('rPwd').value;
+  if(!pseudo||!email||!pwd){toast('Remplissez tous les champs');return;}
+  if(pwd.length<8){toast('Mot de passe trop court (8 min)');return;}
+  user={pseudo,email,avatar:pseudo[0].toUpperCase()};
+  localStorage.setItem('erlya_user',JSON.stringify(user));
+  enterApp();toast('Bienvenue sur Erlya, '+pseudo+' !');
+}
+
+function enterApp(){
+  document.getElementById('authScreen').classList.remove('active');
+  document.getElementById('appScreen').classList.add('active');
+  updateUserUI();
+  renderAll();
+}
+
+function updateUserUI(){
+  if(!user)return;
+  const av=user.avatar||user.pseudo[0].toUpperCase();
+  ['uAva','pAva'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=av;});
+  const pn=document.getElementById('pName');if(pn)pn.textContent=user.pseudo;
+  const ph=document.getElementById('pHandle');if(ph)ph.textContent='@'+user.pseudo.toLowerCase();
+  const sp=document.getElementById('stPseudo');if(sp)sp.textContent='@'+user.pseudo.toLowerCase();
+  const se=document.getElementById('stEmail');if(se)se.textContent=user.email;
+}
+
+function logout(){
+  localStorage.removeItem('erlya_user');user=null;
+  document.getElementById('appScreen').classList.remove('active');
+  document.getElementById('authScreen').classList.add('active');
+  toast('Déconnecté');
+}
+
+// ── RENDER ALL ──
+function renderAll(){
+  renderStories();
+  renderPros();
+  renderConvs();
+  updateCounts();
+}
+
+// ── STORIES ──
+function renderStories(){
+  const myCount=stories.filter(s=>user&&s.authorPseudo===user.pseudo).length;
+  const pss=document.getElementById('psStories');if(pss)pss.textContent=myCount;
+
+  // Home
+  const hw=document.getElementById('homeStoriesWrap');
+  if(hw){
+    if(stories.length===0){
+      hw.innerHTML=`<div class="empty" style="padding:2rem"><div class="empty-icon">📖</div><div class="empty-title">Aucune histoire pour l'instant</div><div class="empty-sub">Sois le premier à publier une histoire sur Erlya.</div><button class="btn btn-primary" onclick="goTab('write')">Écrire une histoire</button></div>`;
+    } else {
+      hw.innerHTML=`<div class="exp-grid" style="padding:0.75rem 1rem">`+stories.map(storyCard).join('')+`</div>`;
+    }
+  }
+
+  // Explore
+  const eg=document.getElementById('expGrid');
+  if(eg){
+    if(stories.length===0){
+      eg.innerHTML=`<div class="empty"><div class="empty-icon">🔭</div><div class="empty-title">Aucune histoire publiée</div><div class="empty-sub">Les histoires de la communauté apparaîtront ici.</div><button class="btn btn-primary" onclick="goTab('write')">Publier la première</button></div>`;
+    } else {
+      eg.innerHTML=`<div class="exp-grid">`+stories.map(storyCard).join('')+`</div>`;
+    }
+  }
+
+  // Profile
+  const ps=document.getElementById('profileStories');
+  const myStories=stories.filter(s=>user&&s.authorPseudo===user.pseudo);
+  if(ps){
+    if(myStories.length===0){
+      ps.innerHTML=`<div style="padding:1.5rem 1rem;text-align:center"><div style="font-size:0.82rem;color:var(--text-muted)">Vous n'avez pas encore publié d'histoire.</div><button class="btn btn-ghost btn-sm" style="margin-top:0.75rem" onclick="goTab('write')">Commencer à écrire</button></div>`;
+    } else {
+      ps.innerHTML=`<div class="exp-grid">`+myStories.map(storyCard).join('')+`</div>`;
+    }
+  }
+}
+
+function storyCard(s,i){
+  const colors=['linear-gradient(160deg,#1a0a2e,#3d1a6e)','linear-gradient(160deg,#2d0f1e,#7a2040)','linear-gradient(160deg,#0f0008,#4a001a)','linear-gradient(160deg,#020d1a,#093060)','linear-gradient(160deg,#0a180a,#1e4a1e)','linear-gradient(160deg,#1a1000,#604020)'];
+  const bg=colors[i%colors.length];
+  const initials=s.title.substring(0,2).toUpperCase();
+  return `<div class="exp-card" onclick="openReader(${i})">
+    <div class="exp-cover" style="background:${bg}">
+      <span style="position:relative;z-index:1;font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:rgba(255,255,255,0.7)">${initials}</span>
+      <div class="exp-ov"></div>
+      ${s.adult?'<span class="exp-badge" style="color:#e07090">18+</span>':''}
+    </div>
+    <div class="exp-info">
+      <div class="exp-title">${s.title}</div>
+      <div class="exp-author">${s.authorPseudo}</div>
+      <div class="exp-stats"><span>${s.genre}</span></div>
+    </div>
+  </div>`;
+}
+
+// ── WRITE ──
+function showWriteForm(){
+  document.getElementById('writeMain').style.display='none';
+  document.getElementById('writeForm').style.display='block';
+}
+function hideWriteForm(){
+  document.getElementById('writeMain').style.display='block';
+  document.getElementById('writeForm').style.display='none';
+}
+
+function publishStory(){
+  const title=document.getElementById('wTitle').value.trim();
+  const content=document.getElementById('wContent').value.trim();
+  const summary=document.getElementById('wSummary').value.trim();
+  const adult=document.getElementById('adultToggle').classList.contains('on');
+  const selGenres=[...document.querySelectorAll('.wg.sel')].map(el=>el.textContent);
+  const genre=selGenres[0]||'Fiction';
+  if(!title){toast('Ajoutez un titre');return;}
+  if(!content){toast('Écrivez votre histoire');return;}
+  const story={title,content,summary,genre,adult,authorPseudo:user.pseudo,date:new Date().toISOString(),likes:0,reads:0,comments:[]};
+  stories.push(story);
+  localStorage.setItem('erlya_stories',JSON.stringify(stories));
+  hideWriteForm();
+  document.getElementById('wTitle').value='';
+  document.getElementById('wContent').value='';
+  document.getElementById('wSummary').value='';
+  renderStories();
+  toast('Histoire publiée !');
+  setTimeout(()=>goTab('explore'),600);
+}
+
+// ── READER ──
+function openReader(idx){
+  const s=stories[idx];if(!s)return;
+  s.reads=(s.reads||0)+1;
+  localStorage.setItem('erlya_stories',JSON.stringify(stories));
+  document.getElementById('rTit').textContent=s.title;
+  document.getElementById('rAuth').textContent=s.authorPseudo+' · '+s.genre;
+  const body=document.getElementById('rBody');
+  body.style.fontSize=rFontSz+'rem';
+  const paras=s.content.split('\n').filter(p=>p.trim());
+  if(!s.comments)s.comments=[];
+  body.innerHTML=`
+    <div class="rtitle">${s.title}</div>
+    <div class="rauthor">${s.authorPseudo}</div>
+    <div class="rchap">Chapitre 1</div>
+    ${paras.map((p,i)=>{
+      const pid='p'+i;
+      const cmts=(s.comments||[]).filter(c=>c.pid===pid);
+      return `<div class="para" id="pw-${pid}">
+        <p class="ptxt" onclick="togglePC('${pid}',${idx})">${p}</p>
+        <div class="pcnt" onclick="togglePC('${pid}',${idx})">${cmts.length?cmts.length+' commentaire'+(cmts.length>1?'s':''):'Commenter'}</div>
+        <div class="pcmts" id="pc-${pid}">
+          ${cmts.map(c=>`<div class="icmt"><div class="icmt-u">${c.user}</div><div class="icmt-t">${c.text}</div></div>`).join('')}
+          <div class="iadd">
+            <input class="iinp" id="ci-${pid}" placeholder="Votre commentaire..." onkeypress="if(event.key==='Enter')addCmt(${idx},'${pid}')">
+            <button class="isend" onclick="addCmt(${idx},'${pid}')">›</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('')}
+    <div style="text-align:center;padding:2rem 0 1rem;color:var(--text-muted);font-family:'Lora',serif;font-style:italic;font-size:0.85rem">— Fin du chapitre —</div>
+  `;
+  body.scrollTop=0;
+  document.getElementById('readerScreen').classList.add('open');
+  document.getElementById('rProg').style.width='0%';
+}
+
+function closeReader(){document.getElementById('readerScreen').classList.remove('open');}
+function updProg(){const b=document.getElementById('rBody');document.getElementById('rProg').style.width=((b.scrollTop/(b.scrollHeight-b.clientHeight))*100)+'%';}
+function rfSz(d){rFontSz=Math.max(0.85,Math.min(1.3,rFontSz+d*0.07));document.getElementById('rBody').style.fontSize=rFontSz+'rem';}
+
+function togglePC(pid,idx){
+  const el=document.getElementById('pc-'+pid);
+  const p=document.querySelector('#pw-'+pid+' .ptxt');
+  if(!el)return;
+  const open=el.classList.toggle('open');
+  if(p)p.classList.toggle('hl',open);
+  if(open){const inp=document.getElementById('ci-'+pid);if(inp)setTimeout(()=>inp.focus(),100);}
+}
+
+function addCmt(idx,pid){
+  const inp=document.getElementById('ci-'+pid);if(!inp)return;
+  const txt=inp.value.trim();if(!txt)return;
+  const s=stories[idx];if(!s)return;
+  if(!s.comments)s.comments=[];
+  s.comments.push({pid,user:user?user.pseudo:'Anonyme',text:txt});
+  localStorage.setItem('erlya_stories',JSON.stringify(stories));
+  inp.value='';
+  const pc=document.getElementById('pc-'+pid);
+  if(pc){
+    const d=document.createElement('div');d.className='icmt';
+    d.innerHTML=`<div class="icmt-u">${user?user.pseudo:'Anonyme'}</div><div class="icmt-t">${txt}</div>`;
+    pc.insertBefore(d,pc.querySelector('.iadd'));
+  }
+  const cnt=document.querySelector('#pw-'+pid+' .pcnt');
+  const cmtCount=s.comments.filter(c=>c.pid===pid).length;
+  if(cnt)cnt.textContent=cmtCount+' commentaire'+(cmtCount>1?'s':'');
+  toast('Commentaire publié');
+}
+
+// ── PROS ──
+function showCreateProModal(type){
+  activeProType=type;
+  const t=document.getElementById('proModalTitle');
+  const sb=document.getElementById('proModalSub');
+  if(type==='graphiste'){if(t)t.textContent='Créer mon profil graphiste';if(sb)sb.textContent='Présentez votre travail et soyez contacté par les auteurs d\'Erlya';}
+  else{if(t)t.textContent='Créer mon profil correctrice';if(sb)sb.textContent='Proposez vos services de correction aux auteurs d\'Erlya';}
+  document.getElementById('proModal').classList.add('open');
+}
+
+function createProProfile(){
+  const name=document.getElementById('proName').value.trim();
+  const spec=document.getElementById('proSpec').value.trim();
+  const desc=document.getElementById('proDesc').value.trim();
+  const price=document.getElementById('proPrice').value.trim();
+  if(!name||!desc){toast('Remplissez les champs obligatoires');return;}
+  const profile={name,spec,desc,price,pseudo:user?user.pseudo:'Anonyme',avatar:user?user.avatar:'?',bg:'linear-gradient(135deg,var(--lily),var(--violet))',date:new Date().toISOString()};
+  if(activeProType==='graphiste'){graphistes.push(profile);localStorage.setItem('erlya_graphistes',JSON.stringify(graphistes));}
+  else{correctrices.push(profile);localStorage.setItem('erlya_correctrices',JSON.stringify(correctrices));}
+  document.getElementById('proModal').classList.remove('open');
+  document.getElementById('proName').value='';document.getElementById('proSpec').value='';
+  document.getElementById('proDesc').value='';document.getElementById('proPrice').value='';
+  renderPros();updateCounts();
+  toast('Profil créé !');
+}
+
+function renderPros(){
+  const gl=document.getElementById('graphList');
+  if(gl){
+    if(graphistes.length===0){
+      gl.innerHTML=`<div class="empty"><div class="empty-icon">◻</div><div class="empty-title">Aucun graphiste inscrit</div><div class="empty-sub">Les graphistes qui créent un profil apparaîtront ici. Vous êtes graphiste ?</div><button class="btn btn-primary" onclick="showCreateProModal('graphiste')">Créer mon profil graphiste</button></div>`;
+    } else {
+      gl.innerHTML=graphistes.map((p,i)=>proCard(p,i,'graphiste')).join('');
+    }
+  }
+  const cl=document.getElementById('corrList');
+  if(cl){
+    if(correctrices.length===0){
+      cl.innerHTML=`<div class="empty"><div class="empty-icon">◈</div><div class="empty-title">Aucune correctrice inscrite</div><div class="empty-sub">Les correctrices qui créent un profil apparaîtront ici. Vous êtes correctrice ?</div><button class="btn btn-primary" onclick="showCreateProModal('correctrice')">Créer mon profil correctrice</button></div>`;
+    } else {
+      cl.innerHTML=correctrices.map((p,i)=>proCard(p,i,'correctrice')).join('');
+    }
+  }
+}
+
+function proCard(p,i,type){
+  const bgs=['linear-gradient(135deg,#1a0a20,#5a2060)','linear-gradient(135deg,#0a1a05,#2a6010)','linear-gradient(135deg,#101828,#304060)','linear-gradient(135deg,#1a0a2e,#5b3fa6)'];
+  const bg=bgs[i%bgs.length];
+  return `<div class="pro-card">
+    <div class="pro-head">
+      <div class="pro-ava" style="background:${bg}">${p.avatar||p.name[0]}</div>
+      <div>
+        <div class="pro-name">${p.name}</div>
+        <div class="pro-role">${p.spec||type}</div>
+        ${p.price?`<div class="pro-rating">${p.price}</div>`:''}
+      </div>
+    </div>
+    <div class="pro-desc">${p.desc}</div>
+    <div class="pro-actions">
+      <button class="btn btn-ghost btn-sm" onclick="openChatWith('${p.name}','${bg}')">Message</button>
+      <button class="btn btn-primary btn-sm" onclick="openChatWith('${p.name}','${bg}')">Contacter</button>
+    </div>
+  </div>`;
+}
+
+function updateCounts(){
+  const gc=document.getElementById('graphCount');if(gc)gc.textContent=graphistes.length+' graphiste'+(graphistes.length>1?'s inscrits':' inscrit');
+  const cc=document.getElementById('corrCount');if(cc)cc.textContent=correctrices.length+' correctrice'+(correctrices.length>1?'s inscrites':' inscrite');
+}
+
+// ── MESSAGES ──
+function openChatWith(name,bg){
+  const existing=convs.find(c=>c.name===name);
+  if(!existing){
+    const newConv={id:Date.now(),name,bg,msgs:[],unread:false};
+    convs.push(newConv);
+    localStorage.setItem('erlya_convs',JSON.stringify(convs));
+    renderConvs();
+  }
+  const c=convs.find(x=>x.name===name);
+  openChat(c.id);
+  goTab('messages');
+}
+
+function renderConvs(){
+  const el=document.getElementById('convList');if(!el)return;
+  if(convs.length===0){
+    el.innerHTML=`<div class="empty"><div class="empty-icon">✉</div><div class="empty-title">Aucun message</div><div class="empty-sub">Vos conversations apparaîtront ici.</div></div>`;
+    return;
+  }
+  el.innerHTML=convs.map(c=>`
+    <div class="msg-row" onclick="openChat(${c.id})">
+      <div class="mava" style="background:${c.bg||'linear-gradient(135deg,var(--lily),var(--violet))'}">${c.name[0]}</div>
+      <div class="minfo">
+        <div class="mname">${c.name}</div>
+        <div class="mprev">${c.msgs.length?c.msgs[c.msgs.length-1].t:'Nouvelle conversation'}</div>
+      </div>
+      <div class="mright">
+        <span class="mtime">${c.msgs.length?'Maintenant':''}</span>
+        ${c.unread?'<div class="udot"></div>':''}
+      </div>
+    </div>`).join('');
+}
+
+function openChat(id){
+  activeChatId=id;
+  const c=convs.find(x=>x.id===id);if(!c)return;
+  document.getElementById('cName').textContent=c.name;
+  document.getElementById('cAva').textContent=c.name[0];
+  document.getElementById('cAva').style.background=c.bg||'linear-gradient(135deg,var(--lily),var(--violet))';
+  renderMsgs(c.msgs);
+  document.getElementById('chatScreen').classList.add('open');
+}
+function closeChat(){document.getElementById('chatScreen').classList.remove('open');}
+function renderMsgs(msgs){
+  const el=document.getElementById('chatMsgs');if(!el)return;
+  if(msgs.length===0){el.innerHTML=`<div style="padding:2rem;text-align:center;color:var(--text-muted);font-size:0.82rem">Démarrez la conversation</div>`;return;}
+  el.innerHTML=msgs.map(m=>`<div class="brow ${m.f}"><div class="bub">${m.t}</div><span class="btime">${m.time}</span></div>`).join('');
+  el.scrollTop=el.scrollHeight;
+}
+function sendMsg(){
+  const inp=document.getElementById('chatInp');
+  const txt=inp.value.trim();if(!txt)return;
+  const c=convs.find(x=>x.id===activeChatId);if(!c)return;
+  const now=new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});
+  c.msgs.push({f:'me',t:txt,time:now});
+  localStorage.setItem('erlya_convs',JSON.stringify(convs));
+  renderMsgs(c.msgs);renderConvs();inp.value='';
+}
+
+// ── NAV ──
+const TABS=['home','explore','library','write','profile','messages','graphisme','correction','notifications','settings'];
+function goTab(tab){
+  TABS.forEach(t=>{
+    const p=document.getElementById('page-'+t);if(p)p.classList.remove('active');
+    const tb=document.getElementById('tab-'+t);if(tb)tb.classList.remove('active');
+  });
+  const p=document.getElementById('page-'+tab);if(p)p.classList.add('active');
+  const tb=document.getElementById('tab-'+tab);if(tb)tb.classList.add('active');
+  document.getElementById('abody').scrollTop=0;
+}
+function lTab(el,t){
+  document.querySelectorAll('.ltab').forEach(x=>x.classList.remove('active'));el.classList.add('active');
+  ['reading','toread','done'].forEach(x=>{const d=document.getElementById('lib-'+x);if(d)d.style.display=x===t?'block':'none';});
+}
+function toggleTheme(){const d=document.documentElement;d.setAttribute('data-theme',d.getAttribute('data-theme')==='dark'?'light':'dark');}
+function openKofi(){document.getElementById('kofiModal').classList.add('open');}
+function selKofi(el){document.querySelectorAll('.kofi-opt').forEach(x=>x.classList.remove('active'));el.classList.add('active');}
+function handleSearch(v){if(!v||v.length<2)return;const r=stories.filter(s=>s.title.toLowerCase().includes(v.toLowerCase())||s.authorPseudo.toLowerCase().includes(v.toLowerCase()));toast(r.length+' résultat'+(r.length>1?'s':''));}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.transform='translateX(-50%) translateY(0)';t.style.opacity='1';
+  clearTimeout(window._tt);
+  window._tt=setTimeout(()=>{t.style.transform='translateX(-50%) translateY(50px)';t.style.opacity='0';},2400);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeReader();closeChat();document.querySelectorAll('.mback').forEach(m=>m.classList.remove('open'));}});
+</script>
+
+</body>
+</html>
